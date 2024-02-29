@@ -1,4 +1,4 @@
-import { Col } from "antd";
+import { Badge, Col } from "antd";
 import React from "react";
 import { WrapperHeader, WrapperHeaderAccount, WrapperTextHeader,  WrapperTextHeaderSmall } from "./style";
 import { UserOutlined, CaretDownOutlined, ShoppingCartOutlined } from '@ant-design/icons';
@@ -7,25 +7,25 @@ import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 
 const HeaderComponent = () => {
     return (
-        <div>
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center', background: '#189AB4'}}>
             <WrapperHeader gutter={16}>
-                <Col span={5} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <WrapperTextHeader>
+                <Col span={5}>
+                    <WrapperTextHeader style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
                     GEAR RETAIL
                     </WrapperTextHeader>
                 </Col>
                 <Col span={13}>
-                <ButtonInputSearch placeholder="Nhập từ khóa tìm kiếm" 
-                // onSearch={onSearch} 
+                <ButtonInputSearch 
+                placeholder="Nhập từ khóa tìm kiếm" 
+                bordered={false}
                 allowClear
                 size="large"
                 textButton="Tìm kiếm"
-
                 />
                 </Col>
-                <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center'}}>
+                <Col span={6} style={{ display: 'flex', gap: '54px', alignItems: 'center'}}>
                     <WrapperHeaderAccount>
-                        <UserOutlined style={{ fontSize: '36px'}} />
+                        <UserOutlined style={{ fontSize: '30px'}} />
                         <div>
                             <WrapperTextHeaderSmall>Đăng nhập, Đăng ký</WrapperTextHeaderSmall>
                             <div>
@@ -38,7 +38,9 @@ const HeaderComponent = () => {
                     <div 
                     style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px'}}
                     >
-                        <ShoppingCartOutlined style={{ fontSize: '36px', color: '#d4f1f4'}}/>
+                        <Badge count={4} size='small'>
+                            <ShoppingCartOutlined style={{ fontSize: '36px', color: '#d4f1f4'}}/>
+                        </Badge>
                         <WrapperTextHeaderSmall>Giỏ Hàng</WrapperTextHeaderSmall>
                     </div>
                 </Col>
