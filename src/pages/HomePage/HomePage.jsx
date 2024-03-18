@@ -21,7 +21,7 @@ const HomePage = () => {
             <div className='body' style={{width: '100%', backgroundColor: '#efefef'}}>
                 <div id="container" style={{backgroundColor: '#efefef', height: '1000px' ,  margin: '0 auto'}}>
                     <SliderComponent arrImages={[slider1, slider2, slider3]}/>
-                    <WrapperProducts style={{width:'1270px', margin: '0 auto'}}>
+                    <WrapperProducts style={{width:'1270px', margin: '10px auto'}}>
                         <CardComponent/>
                         <CardComponent/>
                         <CardComponent/>

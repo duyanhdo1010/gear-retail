@@ -7,7 +7,7 @@ export const WrapperCardStyle = styled(Card)`
     width: 200px;
     height: 200px;
     object-fit: cover;
-  },
+  }
   position: relative;
 `;
 
