@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   WrapperContainerLeft,
   WrapperContainerRight,
@@ -14,13 +14,24 @@ import { useState } from "react";
 import * as UserService from "../../services/UserService";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import Loading from "../../components/LoadingComponent/Loading";
+import * as message from "../../components/Message/Message";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
 
   const mutation = useMutationHooks((data) => UserService.signupUser(data));
 
-  const { data, isPending } = mutation;
+  const { data, isPending, isSuccess, isError } = mutation;
+  console.log("mutation: ", mutation);
+
+  useEffect(() => {
+    if (isSuccess && data?.status === "OK") {
+      message.success();
+      handleNavigateSignIn();
+    } else if (isError || data?.status === "ERR") {
+      message.error();
+    }
+  }, [isSuccess, isError]);
 
   const handleOnChangeEmail = (value) => {
     setEmail(value);

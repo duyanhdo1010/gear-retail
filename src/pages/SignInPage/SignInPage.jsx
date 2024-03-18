@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   WrapperContainerLeft,
   WrapperContainerRight,
@@ -13,13 +13,38 @@ import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import * as UserService from "../../services/UserService";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import Loading from "../../components/LoadingComponent/Loading";
+import * as message from "../../components/Message/Message";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlide";
 
 const SignInPage = () => {
   const navigate = useNavigate();
 
   const mutation = useMutationHooks((data) => UserService.loginUser(data));
 
-  const { data, isPending } = mutation;
+  const { data, isPending, isSuccess } = mutation;
+
+  const handleGetDetailsUser = async (id, token) => {
+    const res = await UserService.getDetailsUser(id, token);
+    dispatch(updateUser({ ...res?.data, access_token: token }));
+    console.log("res: ", res);
+  };
+
+  useEffect(() => {
+    if (isSuccess && data?.status === "OK") {
+      message.success("Đăng nhập thành công");
+      console.log("data: ", data);
+      navigate("/");
+      localStorage.setItem("access_token", data?.access_token);
+      if (data?.access_token) {
+        const decoded = jwtDecode(data?.access_token);
+        if (decoded?.id) {
+          handleGetDetailsUser(decoded?.id, data?.access_token);
+        }
+      }
+    }
+  }, [isSuccess]);
 
   console.log("mutation: ", mutation);
 
@@ -30,7 +55,7 @@ const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const handleOnChangeEmail = (value) => {
     setEmail(value);
   };
