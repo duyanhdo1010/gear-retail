@@ -7,7 +7,6 @@ import { jwtDecode } from "jwt-decode";
 import * as UserService from "./services/UserService";
 import { useDispatch } from "react-redux";
 import { updateUser } from "./redux/slides/userSlide";
-import axios from "axios";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -15,13 +14,13 @@ export default function App() {
   useEffect(() => {
     const { storageData, decoded } = handleDecoded();
     console.log("decodedApp ", decoded);
-    if (decoded?.id) {
+    if (storageData && decoded?.id) {
       handleGetDetailsUser(decoded?.id, storageData);
     }
   }, []);
 
   const handleDecoded = () => {
-    let storageData = localStorage.getItem("access_token");
+    let storageData = localStorage?.getItem("access_token");
     let decoded = {};
     if (storageData && isJsonString(storageData)) {
       storageData = JSON.parse(storageData);
@@ -30,7 +29,7 @@ export default function App() {
     return { storageData, decoded };
   };
 
-  UserService.axiosJwt.interceptors.request.use(
+  UserService.axiosJWT.interceptors.request.use(
     async (config) => {
       const currentTime = new Date();
       const { decoded } = handleDecoded();
@@ -46,8 +45,12 @@ export default function App() {
   );
 
   const handleGetDetailsUser = async (id, token) => {
-    const res = await UserService.getDetailsUser(id, token);
-    dispatch(updateUser({ ...res?.data, access_token: token }));
+    try {
+      const res = await UserService?.getDetailsUser(id, token);
+      dispatch(updateUser({ ...res?.data, access_token: token }));
+    } catch (error) {
+      console.log("Failed to get user details:", error);
+    }
   };
 
   return (

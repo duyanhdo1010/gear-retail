@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const axiosJwt = axios.create();
+export const axiosJWT = axios.create();
 
 export const loginUser = async (data) => {
   const res = await axios.post(
@@ -19,7 +19,7 @@ export const signupUser = async (data) => {
 };
 
 export const getDetailsUser = async (id, access_token) => {
-  const res = await axiosJwt.get(
+  const res = await axiosJWT.get(
     `${process.env.REACT_APP_API_URL}/user/get-details/${id}`,
     {
       headers: {
@@ -42,5 +42,19 @@ export const refreshToken = async () => {
 
 export const logoutUser = async () => {
   const res = await axios.post(`${process.env.REACT_APP_API_URL}/user/log-out`);
+  return res.data;
+};
+
+export const updateUser = async (id, data, access_token) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_URL}/user/update-user/${id}`,
+    data,
+    {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    }
+  );
+  console.log("res.data: ", res.data);
   return res.data;
 };
